@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class PublisherController extends Controller
 {
@@ -11,8 +12,10 @@ class PublisherController extends Controller
     public function index()
     {
         try {
-            $publishers = DB::table('publishers')->paginate(10);
-            return response()->json($publishers);
+            $perPage = 10;
+            $currentPage = request()->get('page', 1);
+            $publishers = DB::table('publishers')->paginate($perPage);
+            return response()->json($publishers, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -35,7 +38,9 @@ class PublisherController extends Controller
     {
         try {
             // Validation logic here
-
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string',
+            ]);
             $name = $request->input('name');
 
             $publisherId = DB::table('publishers')->insertGetId([

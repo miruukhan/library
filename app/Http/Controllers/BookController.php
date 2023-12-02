@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
+
 
 class BookController extends Controller
 {
@@ -12,6 +14,9 @@ class BookController extends Controller
     {
 
         try {
+            $perPage = 10;
+            $currentPage = request()->get('page', 1);
+
             $books = DB::table('books')
                 ->leftJoin('author_book', 'books.id', '=', 'author_book.book_id')
                 ->leftJoin('authors', 'author_book.author_id', '=', 'authors.id')
@@ -21,9 +26,7 @@ class BookController extends Controller
                     'books.title as book_title',
                     'authors.name as author_name',
                     'publishers.name as publisher_name',
-
-                )
-                ->get();
+                )->paginate($perPage);
 
             return response()->json($books, 200);
         } catch (\Exception $e) {
@@ -33,7 +36,9 @@ class BookController extends Controller
 
     public function show($id)
     {
+
         try {
+
             $book = DB::table('books')->where('id', $id)->first();
             if (!$book) {
                 return response()->json(['error' => 'Book not found'], 404);
@@ -46,9 +51,14 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        try {
-            // Validation logic here
 
+        try {
+            // Validation logic
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|string',
+                'publisher_ids' => 'required',
+                'author_ids' => 'required',
+            ]);
             $title = $request->input('title');
             $publisher_ids = $request->input('publisher_ids');
             $author_ids = $request->input('author_ids');
@@ -85,13 +95,19 @@ class BookController extends Controller
 
     public function update(Request $request, $id)
     {
-        try {
-            // Validation logic here
 
+        try {
+            // Validation logic
+            $validator = Validator::make($request->all(), [
+                'title' => 'required|string',
+                'publisher_ids' => 'required',
+                'author_ids' => 'required',
+
+            ]);
             $title = $request->input('title');
             $publisher_ids = $request->input('publisher_ids');
             $author_ids = $request->input('author_ids');
-            $update_authors = $request->input('update_author');
+
             $updated = DB::table('books')
                 ->where('id', $id)
                 ->update([
@@ -100,7 +116,7 @@ class BookController extends Controller
                 ]);
 
             // Update the relationship in the pivot table
-            DB::table('author_book')->where('book_id', $id)->delete(); // Remove existing relationships
+            DB::table('author_book')->where('book_id', $id)->delete();
 
             foreach ($publisher_ids as $publisher_id) {
 
@@ -141,16 +157,6 @@ class BookController extends Controller
             return response()->json(null, 204);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 404);
-        }
-    }
-
-    public function homepage()
-    {
-        try {
-            $books = DB::table('books')->paginate(10);
-            return view('homepage', ['books' => $books]);
-        } catch (\Exception $e) {
-            return response()->json(['error' => $e->getMessage()], 500);
         }
     }
 

@@ -24,4 +24,3 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::resource('books', BookController::class);
 Route::resource('authors', AuthorController::class);
 Route::resource('publishers', PublisherController::class);
-// Route::get('/books/details', [BookController::class, 'getBookDetails']);

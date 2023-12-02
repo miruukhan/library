@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class AuthorController extends Controller
 {
@@ -11,8 +12,10 @@ class AuthorController extends Controller
     public function index()
     {
         try {
-            $authors = DB::table('authors')->paginate(10);
-            return response()->json($authors);
+            $perPage = 10;
+            $currentPage = request()->get('page', 1);
+            $authors = DB::table('authors')->paginate($perPage);
+            return response()->json($authors, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
@@ -34,8 +37,10 @@ class AuthorController extends Controller
     public function store(Request $request)
     {
         try {
-            // Validation logic here
-
+            // Validation logic
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string',
+            ]);
             $name = $request->input('name');
 
             $authorId = DB::table('authors')->insertGetId([
@@ -55,8 +60,10 @@ class AuthorController extends Controller
     public function update(Request $request, $id)
     {
         try {
-            // Validation logic here
-
+            // Validation logic
+            $validator = Validator::make($request->all(), [
+                'name' => 'required|string',
+            ]);
             $name = $request->input('name');
 
             $updated = DB::table('authors')
