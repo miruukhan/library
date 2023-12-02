@@ -32,7 +32,7 @@ Briefly describe your application. Mention its purpose, key features, and any im
 ## Table of Contents
 
 - [Installation](#installation)
-- [Endpoints](#endpoints)
+- [Endpoints](#endpoints with pagenation)
 - [Postman Collection](#postman-collection)
 - [License](#license)
 

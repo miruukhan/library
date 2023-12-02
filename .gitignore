@@ -5,6 +5,13 @@
 /public/storage
 /storage/*.key
 /vendor
+/resources
+/app/Http/Controllers/Auth
+/app/Http/Controllers/HomeController.php
+/database/migrations/2014_10_12_100000_create_password_reset_tokens_table.php
+/database/migrations/2014_10_12_100000_create_password_resets_table.php
+/database/seeders/UserSeeder.php
+/routes/web.php
 .env
 .env.backup
 .env.production

@@ -12,7 +12,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://127.0.0.1:8000/api/books",
+					"raw": "http://127.0.0.1:8000/api/books?page=3",
 					"protocol": "http",
 					"host": [
 						"127",
@@ -24,6 +24,12 @@
 					"path": [
 						"api",
 						"books"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "3"
+						}
 					]
 				}
 			},
@@ -114,7 +120,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"name\": \"Marvels\"\r\n}",
+					"raw": "{\r\n    \"name\": \"Dockers\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -146,7 +152,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Newbie in town\",\r\n    \"publisher_ids\": [2, 1],\r\n    \"author_ids\": [1, 2]\r\n}",
+					"raw": "{\r\n    \"title\": \"Hilton LLC\",\r\n    \"publisher_ids\": [2, 1],\r\n    \"author_ids\": [5, 6]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -178,7 +184,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"title\": \"Newbie in town\",\r\n    \"publisher_ids\": [3, 1],\r\n    \"author_ids\": [1, 2]\r\n}",
+					"raw": "{\r\n    \"title\": \"Newbie in -new town\",\r\n    \"publisher_ids\": [3, 1],\r\n    \"author_ids\": [1, 2]\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
