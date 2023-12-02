@@ -7,12 +7,25 @@ use Illuminate\Support\Facades\DB;
 
 class BookController extends Controller
 {
-    //
+
     public function index()
     {
+
         try {
-            $books = DB::table('books')->paginate(10);
-            return response()->json($books);
+            $books = DB::table('books')
+                ->leftJoin('author_book', 'books.id', '=', 'author_book.book_id')
+                ->leftJoin('authors', 'author_book.author_id', '=', 'authors.id')
+                ->leftJoin('publishers', 'author_book.publisher_id', '=', 'publishers.id')
+                ->select(
+                    'books.id as book_id',
+                    'books.title as book_title',
+                    'authors.name as author_name',
+                    'publishers.name as publisher_name',
+
+                )
+                ->get();
+
+            return response()->json($books, 200);
         } catch (\Exception $e) {
             return response()->json(['error' => $e->getMessage()], 500);
         }
