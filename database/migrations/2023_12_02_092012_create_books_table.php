@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('books', function (Blueprint $table) {
             $table->id();
             $table->string('title');
-            $table->unsignedBigInteger('publisher_id')->collation('utf8mb4_unicode_ci');
             $table->timestamps();
             $table->engine = 'InnoDB';
 
